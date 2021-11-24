@@ -23,6 +23,8 @@
   },
   "homepage": "https://github.com/maticlein/control-asistencia-backend#readme",
   "dependencies": {
+    "@sashido/teachablemachine-node": "^1.2.2",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1"
   }
 }

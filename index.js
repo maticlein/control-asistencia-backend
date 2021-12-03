@@ -2,6 +2,7 @@ require('dotenv').config()
 require("./utils/mongo.js");
 
 const express = require('express');
+const cors = require('cors');
 const TeachableMachine = require('@sashido/teachablemachine-node'); 
 const Lesson = require("./models/Lesson");
 
@@ -10,6 +11,7 @@ const model = new TeachableMachine({
 });
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 const port = process.env.PORT;
 
@@ -48,7 +50,7 @@ app.put("/api/lessons/:id", (req, res) => {
     Lesson.findById(req.params.id)
     .then(lesson => {
         let updates = lesson;
-        updates.students.push(req.body.students[0])
+        updates.students.push(req.body.students)
         Lesson.findOneAndUpdate({ _id: req.params.id }, updates, { new: true })
         .then(updatedLesson => res.json(updatedLesson))
         .catch(err => res.status(400).json("Error: " + err))

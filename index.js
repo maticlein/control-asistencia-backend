@@ -34,6 +34,7 @@ app.post("/api/lessons", (req, res) => {
     const lesson = req.body;
     const newLesson = new Lesson({
         subject: lesson.subject,
+        teacher: lesson.teacher,
         date: lesson.date,
         time: lesson.time,
         students: lesson.students,

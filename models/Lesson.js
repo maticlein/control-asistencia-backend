@@ -5,8 +5,8 @@ const lessonSchema = new mongoose.Schema({
   teacher: String,
   date: String,
   time: String,
-  students: [String],
-});
+  students: [Object],
+}, {typeKey: '$type'});
 
 const Lesson = mongoose.model("Lesson", lessonSchema);
 

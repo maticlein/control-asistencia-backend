@@ -4,7 +4,8 @@ require("./utils/mongo.js");
 const express = require('express');
 const cors = require('cors');
 const TeachableMachine = require('@sashido/teachablemachine-node'); 
-const Lesson = require("./models/Lesson");
+const Lesson = require('./models/Lesson');
+const Temperature = require('./models/Temperature');
 
 const model = new TeachableMachine({
     modelUrl: process.env.TM_MODEL
@@ -56,6 +57,36 @@ app.put("/api/lessons/:id", (req, res) => {
         .catch(err => res.status(400).json("Error: " + err))
     })
     .catch(err => res.status(400).json("Error: " + err))
+});
+
+app.get("/api/temperature", (req, res) => {
+    Temperature.findById("61aaf28a8dcbb8ade1545e6f")
+    .then(temperature => {
+         res.json(temperature);
+    })
+    .catch(err => res.status(400).json("Error: " + err))    
+});
+
+app.post("/api/temperature", (req, res) => {
+    const data = req.body;
+    const newTemperature = new Temperature({
+        temperature: data.temperature,
+    });
+    newTemperature.save().then((result) => {
+        res.json(result);
+    });
+});
+
+app.put("/api/temperature", (req, res) => {
+    Temperature.findById("61aaf28a8dcbb8ade1545e6f")
+    .then(temperature => {
+        let updates = temperature;
+        updates.temperature = req.body.temperature;
+        Temperature.findOneAndUpdate({ _id: "61aaf28a8dcbb8ade1545e6f" }, updates, { new: true })
+        .then(updatedTemperature => res.json(updatedTemperature))
+        .catch(err => res.status(400).json("Error: " + err))
+    })
+    .catch(err => res.status(400).json("Error: " + err)) 
 });
 
 app.listen(port, () => {
